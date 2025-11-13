@@ -1,4 +1,3 @@
-# database/ia_filterdb.py
 from database import db
 
 # 1. आपके दो कलेक्शन्स
@@ -28,15 +27,15 @@ async def create_indexes():
     तेज़ सर्चिंग के लिए टेक्स्ट इंडेक्स बनाता है।
     """
     print("Creating database indexes...")
-    # files_search पर टेक्स्ट इंडेक्स (सर्चिंग के लिए)
+    
+    # [UPDATE] Text index is now only on the new 'search_tags' field for efficiency
+    # and case-insensitive search.
     await files_search.create_index(
-        [
-            ('file_name', 'text'),
-            ('caption', 'text')
-        ],
+        [('search_tags', 'text')],
         name='search_index',
         default_language='none' # सभी भाषाओं को सपोर्ट करने के लिए
     )
+    
     # files_data पर msg_id और chat_id का इंडेक्स (डुप्लिकेट चेकिंग के लिए)
     await files_data.create_index(
         [
@@ -46,6 +45,10 @@ async def create_indexes():
         name='file_index',
         unique=True # एक ही फाइल दोबारा सेव नहीं होगी
     )
+    
+    # [NEW] Added an index on link_id for potential faster lookups
+    await files_search.create_index('link_id', name='link_id_index')
+    
     print("Indexes created successfully.")
 
 
@@ -64,10 +67,15 @@ async def add_file(msg_id, chat_id, file_name, caption):
             'chat_id': chat_id
         })
         
+        # [UPDATE] Create a combined lowercase string for searching
+        search_caption = caption.lower() if caption else ""
+        search_tags = f"{file_name.lower()} {search_caption}"
+        
         # 3. Collection 2 (files_search) में सर्चिंग जानकारी डालें
         await files_search.insert_one({
-            'file_name': file_name,
-            'caption': caption if caption else "",
+            'file_name': file_name,  # Store original file_name for display
+            'caption': caption if caption else "", # Store original caption
+            'search_tags': search_tags, # Store lowercase tags for searching
             'link_id': new_id  # file_data के _id से लिंक करें
         })
         return True
@@ -87,9 +95,14 @@ async def find_files(query_text, max_results=10):
     टेक्स्ट इंडेक्स का उपयोग करके फ़ाइलों को खोजता है।
     यह file_name और link_id लौटाता है।
     """
+    
+    # [UPDATE] Search using the lowercase version of the query
+    search_query = query_text.lower()
+    
     cursor = files_search.find(
-        {'$text': {'$search': query_text}},
-        {'file_name': 1, 'link_id': 1, '_id': 0} # केवल file_name और link_id लाओ
+        {'$text': {'$search': search_query}},
+        # Return the original 'file_name' for display
+        {'file_name': 1, 'link_id': 1, '_id': 0} 
     ).limit(max_results)
     
     return [doc async for doc in cursor]
@@ -98,4 +111,5 @@ async def get_file_details(link_id):
     """
     फॉरवर्डिंग के लिए 'link_id' का उपयोग करके msg_id और chat_id प्राप्त करता है।
     """
+    # _id is already indexed (Primary Key), so this is very fast
     return await files_data.find_one({'_id': int(link_id)})
