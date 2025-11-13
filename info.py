@@ -7,10 +7,10 @@ class Info(object):
     API_HASH = os.environ.get("API_HASH", "6c884690ca85d39a4c5ad7c15b194e42")
 
     # Database
-    DB_URI = os.environ.get("DB_URI", "YOUR_MONGO_DB_URI")
+    DB_URI = os.environ.get("DB_URI", "mongodb+srv://anu77:anu77@cluster0.8ohtzju.mongodb.net/")
 
     # Bot Info
-    Norm_pic = os.environ.get("Norm_pic", "https://telegra.ph/file/your_image_link.jpg")
+    Norm_pic = os.environ.get("Norm_pic", "https://graph.org/file/4d61886e61dfa37a25945.jpg")
     OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "YourUsername")
     
     # Channel Links
