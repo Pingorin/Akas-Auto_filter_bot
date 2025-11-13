@@ -1,6 +1,7 @@
 Pyrogram
 TgCrypto
 motor
+aiohttp
 Flask
 gunicorn
 python-dotenv
