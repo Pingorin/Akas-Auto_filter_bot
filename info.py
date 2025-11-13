@@ -43,7 +43,7 @@ except ValueError:
 
 # Bot Info
 Norm_pic = os.environ.get("Norm_pic", "https://graph.org/file/4d61886e61dfa37a25945.jpg")
-OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "YourUsername")
+OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "@jain_shabb")
 
 # Channel Links
 UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", "https://t.me/YourChannel")
