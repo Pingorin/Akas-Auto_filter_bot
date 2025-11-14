@@ -1,34 +1,24 @@
+# Script.py
+
 class Script(object):
-    START_TXT = """नमस्ते {},
 
-यह एक सैंपल स्टार्ट मैसेज है। आप इसे `Script.py` में बदल सकते हैं।"""
+    START_TXT = """नमस्ते {user},
 
-    ABOUT_TXT = """यह बॉट Pyrogram और Motor का उपयोग करके बनाया गया है।
-- **बनाने वाला:** @YourUsername
-- **भाषा:** Python 3
-- **लाइब्रेरी:** Pyrogram
-- **डेटाबेस:** MongoDB"""
+मैं एक टेलीग्राम बॉट हूँ। मुझे अपनी ज़रूरतों के हिसाब से इस्तेमाल करें।"""
 
-    EARN_MONEY_ENGLISH = """**How to Earn Money (English)**
+    ABOUT_TXT = """**बॉट के बारे में:**
 
-1.  Share the bot.
-2.  Get rewards.
-Details here..."""
+• **बॉट:** [बॉट का नाम]
+• **डेवलपर:** @{owner}
+• **भाषा:** Python 3
+• **लाइब्रेरी:** Pyrogram
+• **सर्वर:** Render"""
 
-    EARN_MONEY_HINDI = """**पैसे कैसे कमाएँ (हिन्दी)**
-
-1.  बॉट को शेयर करें।
-2.  रिवॉर्ड पाएँ।
-पूरी जानकारी यहाँ..."""
-
-    EARN_MONEY_TELUGU = """**డబ్బు సంపాదించడం ఎలా (Telugu)**
-
-1.  బాట్‌ను షేర్ చేయండి.
-2.  రివార్డులు పొందండి.
-వివరాలు ఇక్కడ..."""
-
-    EARN_MONEY_TAMIL = """**பணம் சம்பாதிப்பது எப்படி (Tamil)**
-
-1.  பாட்டைப் பகிரவும்.
-2.  வெகுமதிகளைப் பெறுங்கள்.
-விவரங்கள் இங்கே..."""
+    # Earn Money Texts
+    EARN_MONEY_TXT_ENGLISH = """Here is how you can earn money (English)..."""
+    
+    EARN_MONEY_TXT_HINDI = """यहां बताया गया है कि आप पैसे कैसे कमा सकते हैं (Hindi)..."""
+    
+    EARN_MONEY_TXT_TELUGU = """మీరు డబ్బు ఎలా సంపాదించవచ్చో ఇక్కడ ఉంది (Telugu)..."""
+    
+    EARN_MONEY_TXT_TAMIL = """நீங்கள் எப்படி பணம் சம்பாதிப்பது என்பது இங்கே (Tamil)..."""
