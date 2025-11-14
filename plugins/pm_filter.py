@@ -4,7 +4,7 @@ from pyrogram import filters, Client
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import find_files
 
-@app.on_message(filters.private & filters.text & ~filters.command)
+@app.on_message(filters.private & filters.text & ~filters.command())
 
 async def pm_filter_handler(client: Client, message: Message):
     """
