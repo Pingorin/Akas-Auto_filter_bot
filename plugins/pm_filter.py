@@ -4,7 +4,12 @@ from pyrogram import filters, Client
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import find_files
 
-@app.on_message(filters.private & filters.text & ~filters.command) # <-- यह सही लाइन है
+# 
+# यहाँ बदलाव किया गया है:
+# हमने ~filters.command को ~filters.regex(r"^\/") से बदल दिया है
+# इसका मतलब है "कोई भी मैसेज जो / से शुरू नहीं होता है"
+# 
+@app.on_message(filters.private & filters.text & ~filters.regex(r"^\/"))
 async def pm_filter_handler(client: Client, message: Message):
     """
     ऑटो-फिल्टर (सर्च) हैंडलर
@@ -22,8 +27,6 @@ async def pm_filter_handler(client: Client, message: Message):
     # 3. अगर परिणाम मिलते हैं, तो बटन बनाएँ
     buttons = []
     for file in results:
-        # बटन का टेक्स्ट फाइल का नाम होगा
-        # कॉलबैक डेटा 'fwd_' + link_id होगा
         buttons.append([
             InlineKeyboardButton(
                 text=file['file_name'],
