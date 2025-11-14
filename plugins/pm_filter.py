@@ -5,9 +5,7 @@ from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import find_files
 
 # 
-# यहाँ बदलाव किया गया है:
-# हमने ~filters.command को ~filters.regex(r"^\/") से बदल दिया है
-# इसका मतलब है "कोई भी मैसेज जो / से शुरू नहीं होता है"
+# यह सही लाइन है:
 # 
 @app.on_message(filters.private & filters.text & ~filters.regex(r"^\/"))
 async def pm_filter_handler(client: Client, message: Message):
