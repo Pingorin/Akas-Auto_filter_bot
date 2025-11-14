@@ -16,9 +16,9 @@ MONGO_DB_URI = os.environ.get("MONGO_DB_URI", "YOUR_MONGO_DB_URI_HERE")
 
 # Bot settings
 BOT_USERNAME = os.environ.get("BOT_USERNAME", "YourBotUsername") # (Without @)
-Norm_pic = os.environ.get("Norm_pic", "https://te.legra.ph/file/your_image_link.jpg")
+Norm_pic = os.environ.get("Norm_pic", "https://graph.org/file/4d61886e61dfa37a25945.jpg")
 
 # Channel and Owner
-UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", "https://t.me/YourUpdateChannel")
-MAIN_CHANNEL = os.environ.get("MAIN_CHANNEL", "https://t.me/YourMainChannel")
-OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "YourOwnerUsername") # (Without @)
+UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", "https://t.me/+UWok0DWTWTpkYTA1")
+MAIN_CHANNEL = os.environ.get("MAIN_CHANNEL", "https://t.me/+wVUitwQcus82OGVl")
+OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "ramSitaam") # (Without @)
