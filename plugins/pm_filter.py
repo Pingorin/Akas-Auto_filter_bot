@@ -1,11 +1,15 @@
 # plugins/pm_filter.py
-from bot import app
-from pyrogram import filters, Client
+# 'from bot import app' को हटा दिया गया है
+from pyrogram import filters, Client # <-- यहाँ 'Client' इम्पोर्ट करें
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import find_files
 
-@app.on_message(filters.private & filters.text & ~filters.regex(r"^\/"))
+# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
+@Client.on_message(filters.private & filters.text & ~filters.regex(r"^\/"))
 async def pm_filter_handler(client: Client, message: Message):
+    """
+    ऑटो-फिल्टर (सर्च) हैंडलर
+    """
     query = message.text
     results = await find_files(query, max_results=10)
     
