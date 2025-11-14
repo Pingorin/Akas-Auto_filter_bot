@@ -8,10 +8,10 @@ from info import API_ID, API_HASH, BOT_TOKEN
 # ज़रूरी इम्पोर्ट
 from database.ia_filterdb import create_indexes 
 
-# Define plugins root
+# प्लगइन्स डिक्शनरी
 plugins = dict(root="plugins")
 
-# Initialize the Pyrogram Client
+# Pyrogram Client को शुरू करें
 app = Client(
     "my_telegram_bot",
     api_id=API_ID,
@@ -38,17 +38,16 @@ async def web_server():
 
 async def main():
     print("Starting bot...")
-    
-    # --- यहाँ इंडेक्स बनाएँ ---
     await create_indexes() 
-    
     await app.start()
     print("Bot started!")
     
-    # Start the web server
-    await web_server()
+    # --- यहाँ बदलाव किया गया है ---
+    # वेब सर्वर को एक बैकग्राउंड टास्क के रूप में शुरू करें
+    asyncio.create_task(web_server())
     
-    # Keep the bot running
+    # अब idle() मुख्य थ्रेड को ब्लॉक करेगा, लेकिन वेब सर्वर चलता रहेगा
+    print("Bot is now idle... (Waiting for updates)")
     await idle()
     
     print("Stopping bot...")
