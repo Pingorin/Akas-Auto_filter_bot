@@ -3,8 +3,7 @@ from bot import app  # Main client instance from bot.py
 from pyrogram import filters, Client
 from pyrogram.types import CallbackQuery, Message, InlineKeyboardButton, InlineKeyboardMarkup
 
-# Class-based imports (जैसा आपने अपने कोड में इस्तेमाल किया)
-from info import Info 
+from info import Norm_pic, OWNER_USERNAME, OWNER_ID
 from Script import Script 
 
 # Database imports
