@@ -1,13 +1,14 @@
 # plugins/index.py
-from pyrogram import filters, Client # <-- '@Client' यहाँ है
+from pyrogram import filters, Client
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from info import OWNER_ID
 from database.ia_filterdb import add_file, is_file_indexed
 import asyncio
 
-# '@Client' का उपयोग करें, '@app' का नहीं
+# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
 @Client.on_message(filters.command("index") & filters.user(OWNER_ID))
+# --- यह लाइन ठीक कर दी गई है ---
 async def index_files_command(client: Client, message: Message):
     """
     /index कमांड हैंडलर
@@ -19,6 +20,7 @@ async def index_files_command(client: Client, message: Message):
     indexed_files = 0
     
     try:
+        # अब 'client' सही 'Client' ऑब्जेक्ट होगा
         async for msg in client.iter_messages(chat_id):
             total_files += 1
             
