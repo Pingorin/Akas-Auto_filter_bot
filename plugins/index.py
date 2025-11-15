@@ -21,7 +21,7 @@ async def index_files_command(client: Client, message: Message):
     
     try:
         # अब 'client' सही 'Client' ऑब्जेक्ट होगा
-        async for msg in client.iter_messages(chat_id):
+        async for message in client.get_chat_history(chat_id=CHAT_ID):
             total_files += 1
             
             if total_files % 500 == 0:
