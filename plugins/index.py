@@ -36,8 +36,7 @@ async def index_forwarded_message(client: Client, message: Message):
         print(f"Checking permissions for chat_id: {chat_id}...") # यह Render Log में प्रिंट होगा
         member = await client.get_chat_member(chat_id, "me")
         
-        # यह Render Log में प्रिंट होगा
-        print(f"Bot status in channel is: {member.status}") 
+        print(f"Bot status in channel is: {member.status}") # यह Render Log में प्रिंट होगा
         
         if member.status not in ('administrator', 'creator'):
              print("Bot is NOT an admin. Failing.") # यह Render Log में प्रिंट होगा
@@ -54,7 +53,6 @@ async def index_forwarded_message(client: Client, message: Message):
          return
     # --- END DEBUGGING ---
 
-    # 3. इंडेक्सिंग प्रक्रिया शुरू करें
     print("Bot is admin. Starting indexing...") # यह Render Log में प्रिंट होगा
     status_msg = await message.reply(f"'{chat_title}' के लिए इंडेक्सिंग शुरू हो रही है...\n(यह प्रक्रिया धीमी हो सकती है)")
     
@@ -89,5 +87,11 @@ async def index_forwarded_message(client: Client, message: Message):
         print(f"Error during indexing: {e}") # यह Render Log में प्रिंट होगा
         await status_msg.edit(f"इंडेक्सिंग के दौरान एक एरर आया: {e}")
         return
-        
-    await status_msg.edit(f"**'{chat_title}' के लिए इंडेक्सिंग पूरी हुई!**\n\...कुल नई फाइलें इंडेक्स की गईं: {indexed_files}")
+    
+    # --- यह लाइन ठीक कर दी गई है ---
+    # (मेरी टाइपो को हटा दिया गया है)
+    await status_msg.edit(
+        f"**'{chat_title}' के लिए इंडेक्सिंग पूरी हुई!**\n\n"
+        f"कुल स्कैन किए गए मैसेज: {total_files}\n"
+        f"कुल नई फाइलें इंडेक्स की गईं: {indexed_files}"
+    )
