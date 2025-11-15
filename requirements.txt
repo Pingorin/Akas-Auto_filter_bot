@@ -1,7 +1,5 @@
+# requirements.txt
 Pyrogram
-TgCrypto
-motor
+TGCrypto
+Motor
 aiohttp
-Flask
-gunicorn
-python-dotenv
