@@ -1,13 +1,12 @@
 # plugins/index.py
-# 'from bot import app' को हटा दिया गया है
-from pyrogram import filters, Client # <-- यहाँ 'Client' इम्पोर्ट करें
+from pyrogram import filters, Client # <-- '@Client' यहाँ है
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from info import OWNER_ID
 from database.ia_filterdb import add_file, is_file_indexed
 import asyncio
 
-# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
+# '@Client' का उपयोग करें, '@app' का नहीं
 @Client.on_message(filters.command("index") & filters.user(OWNER_ID))
 async def index_files_command(client: Client, message: Message):
     """
