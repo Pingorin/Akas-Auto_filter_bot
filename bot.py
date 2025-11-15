@@ -30,9 +30,6 @@ async def main():
         plugins=plugins
     )
     
-    # Client को 'app' वेरिएबल पास करने के लिए
-    # web_app.app = app 
-    
     await app.start()
     print("Bot started!")
     
