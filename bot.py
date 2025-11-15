@@ -16,30 +16,36 @@ app = Client(
     plugins=plugins
 )
 
+# --- AIOHTTP Web Server for Render ---
 routes = web.RouteTableDef()
 
 @routes.get("/", allow_head=True)
 async def root_route_handler(request):
     return web.json_response({"status": "bot is running"})
 
+# --- Main Bot Function ---
 async def main():
     print("Starting bot...")
     await create_indexes() 
     await app.start()
     print("Bot started!")
     
+    # --- Web server logic (Render के लिए अपडेट किया गया) ---
     web_app = web.Application(client_max_size=30000000)
     web_app.add_routes(routes)
-    port = int(os.environ.get("PORT", 8080)) 
+    port = int(os.environ.get("PORT", 8080)) # Render यह PORT वेरिएबल देता है
     
+    # वेब सर्वर रनर बनाएँ
     runner = web.AppRunner(web_app)
     await runner.setup()
     site = web.TCPSite(runner, "0.0.0.0", port)
     
+    # वेब सर्वर शुरू करें
     await site.start()
     print(f"Web server started on 0.0.0.0:{port}")
     
-    await asyncio.Event().wait() # बॉट को जीवित रखता है
+    # बॉट (और सर्वर) को हमेशा के लिए जीवित रखें
+    await asyncio.Event().wait() # यह idle() की जगह लेता है
 
 if __name__ == "__main__":
     try:
