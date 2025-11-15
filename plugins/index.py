@@ -6,22 +6,22 @@ from info import OWNER_ID
 from database.ia_filterdb import add_file, is_file_indexed
 import asyncio
 
-# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
 @Client.on_message(filters.command("index") & filters.user(OWNER_ID))
-# --- यह लाइन ठीक कर दी गई है ---
 async def index_files_command(client: Client, message: Message):
     """
     /index कमांड हैंडलर
     """
+    # यह 'chat_id' (lowercase) का सही उपयोग करता है
     chat_id = message.chat.id
+    
     status_msg = await message.reply("Indexing started...\n(यह प्रक्रिया धीमी हो सकती है)")
     
     total_files = 0
     indexed_files = 0
     
     try:
-        # अब 'client' सही 'Client' ऑब्जेक्ट होगा
-        async for message in client.get_chat_history(chat_id=CHAT_ID):
+        # यहाँ 'chat_id' का उपयोग किया गया है
+        async for msg in client.iter_messages(chat_id):
             total_files += 1
             
             if total_files % 500 == 0:
@@ -31,6 +31,7 @@ async def index_files_command(client: Client, message: Message):
                     await asyncio.sleep(e.value)
             
             if msg.media:
+                # यहाँ 'chat_id' का उपयोग किया गया है
                 if await is_file_indexed(msg.id, chat_id):
                     continue 
                 
@@ -47,6 +48,7 @@ async def index_files_command(client: Client, message: Message):
                     
                 caption = msg.caption if msg.caption else ""
                 
+                # यहाँ 'chat_id' का उपयोग किया गया है
                 if await add_file(msg.id, chat_id, file_name, caption):
                     indexed_files += 1
                     
