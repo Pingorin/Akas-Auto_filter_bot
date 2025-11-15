@@ -6,16 +6,6 @@ from pyrogram import Client
 from info import API_ID, API_HASH, BOT_TOKEN
 from database.ia_filterdb import create_indexes 
 
-plugins = dict(root="plugins")
-
-app = Client(
-    "my_telegram_bot",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
-    plugins=plugins
-)
-
 # --- AIOHTTP Web Server for Render ---
 routes = web.RouteTableDef()
 
@@ -27,6 +17,22 @@ async def root_route_handler(request):
 async def main():
     print("Starting bot...")
     await create_indexes() 
+    
+    # --- यहाँ बदलाव किया गया है ---
+    # Client को main() के अंदर शुरू करें
+    plugins = dict(root="plugins")
+    
+    app = Client(
+        "my_telegram_bot",
+        api_id=API_ID,
+        api_hash=API_HASH,
+        bot_token=BOT_TOKEN,
+        plugins=plugins
+    )
+    
+    # Client को 'app' वेरिएबल पास करने के लिए
+    # web_app.app = app 
+    
     await app.start()
     print("Bot started!")
     
