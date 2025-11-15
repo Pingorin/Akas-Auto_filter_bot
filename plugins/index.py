@@ -11,14 +11,13 @@ import asyncio
 async def index_command_pm(client: Client, message: Message):
     """
     Handles the /index command in PM.
-    Asks the user to forward a message from the target channel.
     """
     await message.reply(
         text="इंडेक्सिंग शुरू करने के लिए, कृपया उस चैनल से **कोई भी एक मैसेज** (या आखिरी मैसेज) यहाँ फॉरवर्ड करें।\n\n(ध्यान दें: इंडेक्सिंग के लिए बॉट का उस चैनल में एडमिन होना ज़रूरी है।)",
-        reply_markup=ForceReply(selective=True) # यह यूज़र को रिप्लाई करने के लिए फ़ोर्स करता है
+        reply_markup=ForceReply(selective=True) 
     )
 
-# 2. फॉरवर्ड किए गए मैसेज को हैंडल करना (केवल PM में और केवल ओनर से)
+# 2. फॉरवर्ड किए गए मैसेज को हैंडल करना
 @Client.on_message(filters.private & filters.user(OWNER_ID) & filters.forwarded)
 async def index_forwarded_message(client: Client, message: Message):
     """
@@ -29,34 +28,42 @@ async def index_forwarded_message(client: Client, message: Message):
         await message.reply("एरर: यह फॉरवर्ड किया गया मैसेज किसी चैनल से नहीं है।")
         return
 
-    # 1. चैनल ID और टाइटल प्राप्त करें
     chat_id = message.forward_from_chat.id
     chat_title = message.forward_from_chat.title or "यह चैनल"
 
-    # 2. जांचें कि क्या बॉट उस चैनल में एडमिन है
+    # --- DEBUGGING (डीबगिंग) ---
     try:
+        print(f"Checking permissions for chat_id: {chat_id}...") # यह Render Log में प्रिंट होगा
         member = await client.get_chat_member(chat_id, "me")
+        
+        # यह Render Log में प्रिंट होगा
+        print(f"Bot status in channel is: {member.status}") 
+        
         if member.status not in ('administrator', 'creator'):
+             print("Bot is NOT an admin. Failing.") # यह Render Log में प्रिंट होगा
              await message.reply(f"एरर: मैं '{chat_title}' में एडमिन नहीं हूँ। कृपया मुझे पहले एडमिन बनाएँ।")
              return
+             
     except UserNotParticipant:
+         print("Bot is not a participant in the channel.") # यह Render Log में प्रिंट होगा
          await message.reply(f"एरर: मैं '{chat_title}' का सदस्य (member) नहीं हूँ। कृपया मुझे पहले चैनल में जोड़ें और फिर एडमिन बनाएँ।")
          return
     except Exception as e:
+         print(f"Error during permission check: {e}") # यह Render Log में प्रिंट होगा
          await message.reply(f"चैनल की जाँच करते समय एक एरर आया: {e}")
          return
+    # --- END DEBUGGING ---
 
     # 3. इंडेक्सिंग प्रक्रिया शुरू करें
+    print("Bot is admin. Starting indexing...") # यह Render Log में प्रिंट होगा
     status_msg = await message.reply(f"'{chat_title}' के लिए इंडेक्सिंग शुरू हो रही है...\n(यह प्रक्रिया धीमी हो सकती है)")
     
     total_files = 0
     indexed_files = 0
     
     try:
-        # सही chat_id का उपयोग करके चैनल के मैसेज को इटरेट (iterate) करें
         async for msg in client.iter_messages(chat_id):
             total_files += 1
-            
             if total_files % 500 == 0:
                 try:
                     await status_msg.edit(f"स्कैन किए गए: {total_files} मैसेज\nइंडेक्स की गई: {indexed_files} फाइलें")
@@ -79,7 +86,8 @@ async def index_forwarded_message(client: Client, message: Message):
                     indexed_files += 1
                     
     except Exception as e:
+        print(f"Error during indexing: {e}") # यह Render Log में प्रिंट होगा
         await status_msg.edit(f"इंडेक्सिंग के दौरान एक एरर आया: {e}")
         return
         
-    await status_msg.edit(f"**'{chat_title}' के लिए इंडेक्सिंग पूरी हुई!**\n\nकुल स्कैन किए गए मैसेज: {total_files}\nकुल नई फाइलें इंडेक्स की गईं: {indexed_files}")
+    await status_msg.edit(f"**'{chat_title}' के लिए इंडेक्सिंग पूरी हुई!**\n\...कुल नई फाइलें इंडेक्स की गईं: {indexed_files}")
