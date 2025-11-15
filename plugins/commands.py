@@ -1,6 +1,5 @@
 # plugins/commands.py
-# 'from bot import app' को हटा दिया गया है
-from pyrogram import filters, Client # <-- यहाँ 'Client' इम्पोर्ट करें
+from pyrogram import filters, Client # <-- '@Client' यहाँ है
 from pyrogram.types import CallbackQuery, Message
 from info import Norm_pic, OWNER_USERNAME
 from Script import Script
@@ -8,7 +7,7 @@ from utils import gen_start_keyboard, gen_earn_keyboard, gen_back_keyboard
 from database.users_chats_db import add_user
 from database.ia_filterdb import get_file_details
 
-# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
+# '@Client' का उपयोग करें, '@app' का नहीं
 @Client.on_message(filters.command("start") & filters.private)
 async def start_command(client: Client, message: Message):
     """Handles the /start command."""
@@ -23,7 +22,7 @@ async def start_command(client: Client, message: Message):
         reply_markup=gen_start_keyboard()
     )
 
-# '@app' को '@Client' (बड़े 'C' के साथ) से बदलें
+# '@Client' का उपयोग करें, '@app' का नहीं
 @Client.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
     """Handles all callback button clicks."""
